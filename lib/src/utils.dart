@@ -63,3 +63,12 @@ String toPascal(String text) => text
     .split(RegExp(r'[_\s-]+'))
     .map((w) => w.isEmpty ? "" : w[0].toUpperCase() + w.substring(1))
     .join();
+
+String toSnake(String text) {
+  return text
+      .replaceAllMapped(
+        RegExp(r'([a-z0-9])([A-Z])'),
+        (m) => '${m.group(1)}_${m.group(2)!.toLowerCase()}',
+      )
+      .toLowerCase();
+}

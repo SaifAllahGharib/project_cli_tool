@@ -11,8 +11,8 @@ Future<void> runCli(List<String> args) async {
   }
 
   final featureName = args.first;
-  final flags = args.where((a) => a.startsWith("-") && a != "--name").toList();
 
+  final flags = args.where((a) => a.startsWith("-") && a != "--name").toList();
   if (flags.isEmpty) {
     print("❌ Must provide at least one flag");
     exit(1);
@@ -27,53 +27,65 @@ Future<void> runCli(List<String> args) async {
   final className = customName != null
       ? toPascal(customName)
       : toPascal(featureName);
-  final fileName = customName != null
-      ? customName.toLowerCase()
-      : featureName.toLowerCase();
 
-  final featuresRoot = Directory("lib/features");
-  if (!featuresRoot.existsSync()) featuresRoot.createSync(recursive: true);
+  final fileName = toSnake(customName ?? featureName);
 
-  final featureDir = Directory("${featuresRoot.path}/$fileName");
+  final featureDir = Directory("lib/features/$featureName");
+  if (!featureDir.existsSync()) {
+    featureDir.createSync(recursive: true);
+    print("⚠ Feature folder '${featureDir.path}' created.");
+  } else {
+    print("ℹ Using existing feature folder '${featureDir.path}'.");
+  }
 
   for (var flag in flags) {
     switch (flag) {
       case "-c":
+        final cubitDir = Directory(
+          "${featureDir.path}/presentation/cubit/$fileName",
+        );
+        if (!cubitDir.existsSync()) cubitDir.createSync(recursive: true);
+
         await generateTemplate(
           "cubit",
           className,
           fileName,
-          Directory("${featureDir.path}/presentation/cubit"),
+          cubitDir,
           templateFolderName: "cubit",
         );
         await generateTemplate(
           "state",
           className,
           fileName,
-          Directory("${featureDir.path}/presentation/cubit"),
+          cubitDir,
           templateFolderName: "cubit",
         );
         break;
       case "-b":
+        final blocDir = Directory(
+          "${featureDir.path}/presentation/bloc/$fileName",
+        );
+        if (!blocDir.existsSync()) blocDir.createSync(recursive: true);
+
         await generateTemplate(
           "bloc",
           className,
           fileName,
-          Directory("${featureDir.path}/presentation/bloc"),
+          blocDir,
           templateFolderName: "bloc",
         );
         await generateTemplate(
           "bloc_event",
           className,
           fileName,
-          Directory("${featureDir.path}/presentation/bloc"),
+          blocDir,
           templateFolderName: "bloc",
         );
         await generateTemplate(
           "state",
           className,
           fileName,
-          Directory("${featureDir.path}/presentation/bloc"),
+          blocDir,
           templateFolderName: "bloc",
         );
         break;
@@ -96,13 +108,7 @@ Future<void> runCli(List<String> args) async {
         );
         break;
       case "-f":
-        if (!featureDir.existsSync()) {
-          createFeatureFolders(featureDir);
-        } else {
-          print(
-            "⚠ Feature folder '${featureDir.path}' already exists, skipping creation.",
-          );
-        }
+        createFeatureFolders(featureDir);
         break;
       default:
         print("❌ Unknown flag $flag");
