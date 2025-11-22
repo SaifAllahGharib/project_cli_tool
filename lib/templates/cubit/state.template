@@ -1,0 +1,24 @@
+import 'package:equatable/equatable.dart';
+
+sealed class {{ClassName}}State extends Equatable {
+const {{ClassName}}State();
+
+@override
+List<Object> get props => [];
+}
+
+final class {{ClassName}}Init extends {{ClassName}}State {
+const {{ClassName}}Init();
+}
+
+final class {{ClassName}}Loading extends {{ClassName}}State {
+const {{ClassName}}Loading();
+}
+
+final class {{ClassName}}Success extends {{ClassName}}State {
+const {{ClassName}}Success();
+}
+
+final class {{ClassName}}Failure extends {{ClassName}}State {
+const {{ClassName}}Failure();
+}

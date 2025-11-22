@@ -1,0 +1,10 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+
+import '{{fileName}}_event.dart';
+import '{{fileName}}_state.dart';
+
+@injectable
+class {{ClassName}}Bloc extends Bloc<{{ClassName}}Event, {{ClassName}}State> {
+  {{ClassName}}Bloc() : super(const {{ClassName}}Init());
+}

@@ -1,0 +1,9 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+
+import '{{fileName}}_state.dart';
+
+@injectable
+class {{ClassName}}Cubit extends Cubit<{{ClassName}}State> {
+  {{ClassName}}Cubit() : super(const {{ClassName}}Init());
+}

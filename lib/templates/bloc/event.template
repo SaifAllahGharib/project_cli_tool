@@ -1,0 +1,7 @@
+import 'package:equatable/equatable.dart';
+
+sealed class {{ClassName}}Event extends Equatable {
+  const {{ClassName}}Event();
+  @override
+  List<Object> get props => [];
+}
